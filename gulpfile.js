@@ -23,13 +23,17 @@ SRC PATH
 */
 const srcPaths = {
     appIndex: ['./src/app/*.html'], // all html files
-    scss:['./src/app/*.scss'], // all scss files
+    scss:['./src/app/*.scss', 
+          './src/templates/**/*.scss'], // all scss files
     typescript: ['./src/app/*.ts'], // we dont use this yet
     appEngine:['./src/app/engine.ts'], // base on node js
     mainEntries: './src/app/main.ts', // main entries
     templatesHtml: ['./src/templates/rect/html/*.html', 
                     './src/templates/sky/html/*.html',
-                    './src/templates/lead/html/*.html'] // template html for the banner
+                    './src/templates/lead/html/*.html'], // template html for the banner
+    img: ['./src/templates/rect/img/*', 
+          './src/templates/sky/img/*',
+          './src/templates/lead/img/*']
 };
 
 /*
@@ -62,7 +66,8 @@ const vendorFile = {
     bootstrap : ['./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js', 
                 './node_modules/bootstrap/dist/js/bootstrap.bundle.min.js.map',
                 './node_modules/bootstrap/dist/css/bootstrap.min.css',
-                './node_modules/bootstrap/dist/css/bootstrap.min.css.map']
+                './node_modules/bootstrap/dist/css/bootstrap.min.css.map'],
+    gsap: ['node_modules/gsap/src/minified/TweenMax.min.js']            
 };
 
 
@@ -216,6 +221,17 @@ gulp.task("tempaltes::html", function () {
 
 /*
 ------------------------------
+IMG
+send IMG template file to dist
+------------------------------
+*/ 
+gulp.task("tempaltes::img", function () {
+    return gulp.src(srcPaths.img)
+        .pipe(gulp.dest(distPaths.app)) // go to de app dist
+});
+
+/*
+------------------------------
 ENGINE
 engine.js is file base on nodejs
 send engine file to dist
@@ -251,6 +267,17 @@ add bootstrap to the app folder
 */
 gulp.task("app::bootstrap", function () {
      return gulp.src(vendorFile.bootstrap)
+        .pipe(gulp.dest(distPaths.app)) // go to de app dist
+});
+
+/*
+------------------------------
+VENDOR GSAP
+add GSAP to the app folder
+------------------------------
+*/
+gulp.task("app::gsap", function () {
+     return gulp.src(vendorFile.gsap)
         .pipe(gulp.dest(distPaths.app)) // go to de app dist
 });
 
@@ -301,7 +328,8 @@ gulp.task('serve', ['executeNode'], function() {
 DEFAULT
 ------------------------------
 */
-gulp.task("default", ['serve', 'tempaltes::html', 'app::sass', 'app::bootstrap', 'app::jquery'], bundle);
+gulp.task("default", ['serve', 'tempaltes::html', 'tempaltes::img', 'app::sass', 'app::bootstrap', 'app::jquery', 'app::gsap'], bundle);
+
 
 /*
 ------------------------------

@@ -1,5 +1,4 @@
 var fs = require('fs');
-
 /*
 ------------------------------
 APPEND TEMPLATE FILE
@@ -29,4 +28,4 @@ fs.readdir('./dist/templates/html/', 'utf8', (err:any, files:any) => {
 			console.log(`${files[i]} has been saved`)
 		}
 	}
-}); 
+});  
