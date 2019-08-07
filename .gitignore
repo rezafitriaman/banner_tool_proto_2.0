@@ -43,5 +43,6 @@ parser
 throttleproxy
 window-size
 node-sass
+.idea/
 
 

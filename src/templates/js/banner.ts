@@ -485,47 +485,97 @@ declare module studio.video {
  */
 declare var Enabler:studio.Enabler;
 
-declare module dynamicContent {
-
-}
+declare var dynamicContent:any;
 
 /*-----------------------------start test------------------------------------*/
 export function test() {
 
 	/*-----------------------------------------------------------------*/
 	class BaseBanner {
-	    bannerWidth: function;
-	    bannerHeight: function;
-	    main: nodeList;
+	    main: NodeList;
 	    name: string;
 	    constructor(theName: string) { 
 	    	this.main = document.querySelectorAll('.main'); 
 
 	    	this.name = theName;
 	    }
-	    bannerWidth(size: number) {
+	    bannerWidth(size: string) {
 	    	
 	    	let main = this.main;
+	    	let sizeContent = '.content-' + size;
+	    	let width;
 
-	    	for (var i = main.length - 1; i >= 0; i--) {
-
-	    		if(main[i].querySelectorAll('.content-300x250').length > 0) {
-		    		main[i].querySelectorAll('.content-300x250');
-		    		console.log(main[i].querySelector('.content-300x250'))
+	    	for (let i = main.length - 1; i >= 0; i--) {
+	    		let target:NodeList = (<HTMLElement>main[i]).querySelectorAll(sizeContent);
+	    		if(target.length > 0) {
+		    		width = (<HTMLElement>target[0]).offsetWidth;
 	    		}
 	    	}
+	    	return width;
+	    }
+	    bannerHeight(size: string) {
+	    	
+	    	let main = this.main;
+	    	let sizeContent = '.content-' + size;
+	    	let height;
+
+	    	for (let i = main.length - 1; i >= 0; i--) {
+	    		let target:NodeList = (<HTMLElement>main[i]).querySelectorAll(sizeContent);
+	    		if(target.length > 0) {
+		    		height = (<HTMLElement>target[0]).offsetHeight;
+	    		}
+	    	}
+	    	return height;
+	    }
+	    init() {
+	    	window.onload = function() {
+				if (Enabler.isInitialized()) {
+					enablerInitHandler();
+				} else {
+					Enabler.addEventListener(studio.events.StudioEvent.INIT, enablerInitHandler);
+				}
+			}
+
+			function enablerInitHandler() {
+			  // Start polite loading, or start animation,
+			  // load in your image assets, call Enabler methods,
+			  // and/or include other Studio modules.
+			  if (Enabler.isPageLoaded()) {
+			    showAd();
+			  } else {
+			    Enabler.addEventListener(studio.events.StudioEvent.PAGE_LOADED, showAd);
+			  }
+			}
+
+			function showAd() {
+				/*This code checks if the page is loaded using the Enabler’s isPageLoaded method, which returns true or false.
+				If true, call a custom function that loads your creative (in this example, the custom function is called showAd).
+				If false, listen for the Enabler’s PAGE_LOADED event before calling showAd.*/
+
+				// Dynamic Content variables and sample values
+				var development = (window.location.href.indexOf('3000') != -1 || window.location.href.indexOf('3002') != -1 || window.location.href.indexOf('3003') != -1 || window.location.href.indexOf('3004') != -1) ? true : false;
+
+				adds(development);
+			}
+
 	    }
 	    move(distanceInMeters: number = 0) {
 	        console.log(`${this.name} moved ${distanceInMeters}m.`);
 	    }
 	}
 
-	class Size300x250 extends BaseBanner {
+
+
+
+
+
+	class Banner extends BaseBanner {
 	    constructor(name: string) { super(name); }
 	    move(distanceInMeters = 5) {
 	        console.log("Slithering...");
 	        super.move(distanceInMeters);
-	        super.bannerWidth()
+	        console.log(super.bannerWidth('300x250'))
+	        console.log(super.bannerHeight('300x250'))
 	    }
 
 	}
@@ -538,13 +588,15 @@ export function test() {
 	    }
 	}
 
-	let Size300x250 = new Size300x250("Sammy tsshe Python");
+	let rec300x250: BaseBanner = new Banner("300x250");
 	let tom: BaseBanner = new Horse("Tommy the Palomino");
 
-	Size300x250.move();
+	rec300x250.move();
 	tom.move(34);
 
 	/*-----------------------------------------------------------------*/
+
+    /*---------------------------start origin--------------------------------------*/
 	let creative = {};
 	let bannerWidth;
 	let bannerHeight;
@@ -558,7 +610,7 @@ export function test() {
 		} else {
 			Enabler.addEventListener(studio.events.StudioEvent.INIT, enablerInitHandler);
 		}
-	}
+	};
 
 	function enablerInitHandler() {
 	  // Start polite loading, or start animation,

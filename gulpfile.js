@@ -163,7 +163,7 @@ after TEMPLATE html is sended to dist, execute node engine.js
 reload the browser manualy
 ------------------------------
 */
-gulp.task('executeNode::afterTemplatesHtmlWatch', ['tempaltes::html'], function(done) {
+gulp.task('executeNode::afterTemplatesHtmlWatch', ['templates::html'], function(done) {
   spawn('node', nodeFile.engine, { stdio: 'inherit' })
   setTimeout(function(){ browserSync.reload(); console.log('reload..............................') }, 2000);
   console.log(done)
@@ -214,7 +214,7 @@ TEMPLATE HTML BANNERS
 send html template file to dist template
 ------------------------------
 */ 
-gulp.task("tempaltes::html", function () {
+gulp.task("templates::html", function () {
     return gulp.src(srcPaths.templatesHtml)
         .pipe(gulp.dest(distPaths.templatesHtml)) // go to de app dist
 });
@@ -225,7 +225,7 @@ IMG
 send IMG template file to dist
 ------------------------------
 */ 
-gulp.task("tempaltes::img", function () {
+gulp.task("templates::img", function () {
     return gulp.src(srcPaths.img)
         .pipe(gulp.dest(distPaths.app)) // go to de app dist
 });
@@ -328,7 +328,7 @@ gulp.task('serve', ['executeNode'], function() {
 DEFAULT
 ------------------------------
 */
-gulp.task("default", ['serve', 'tempaltes::html', 'tempaltes::img', 'app::sass', 'app::bootstrap', 'app::jquery', 'app::gsap'], bundle);
+gulp.task("default", ['serve', 'templates::html', 'templates::img', 'app::sass', 'app::bootstrap', 'app::jquery', 'app::gsap'], bundle);
 
 
 /*
@@ -340,4 +340,4 @@ watchedBrowserify.on("update", bundle);
 watchedBrowserify.on("log", fancy_log); 
 
 
-/*, 'tempaltes::html', 'sass', 'executeNode'*/
+/*, 'templates::html', 'sass', 'executeNode'*/
