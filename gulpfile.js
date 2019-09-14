@@ -1,4 +1,6 @@
 const gulp = require('gulp');
+
+
 const browserify = require('browserify');
 const source = require('vinyl-source-stream');
 const tsify = require('tsify');
@@ -6,7 +8,6 @@ const sourcemaps = require('gulp-sourcemaps');
 const buffer = require('vinyl-buffer');
 const browserSync = require('browser-sync').create();
 const watchify = require("watchify");
-const fancy_log = require("fancy-log");
 const sass = require('gulp-sass');
 const plumber = require('gulp-plumber');
 const autoprefixer = require('gulp-autoprefixer');
@@ -14,8 +15,9 @@ const fs = require('fs');
 const spawn = require('child_process').spawn;
 const ts = require("gulp-typescript");
 const tsProject = ts.createProject("tsconfig.json");
+//extra
 const watch = require('gulp-watch');
-
+const fancy_log = require("fancy-log");
 /*
 ------------------------------
 SRC PATH
